@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Madimi+One&family=Righteous&family=Roboto&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+  
+.carter-one-regular {
+    font-family: "Carter One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }

@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   const [open, setOpen] = useState(true);
   const Menus = [
-    { title: 'Add Drivers', src: 'User', path: '/drivers' },
-    { title: 'Add Buses', src: 'bus', path: '/buses' },
-    { title: 'Add Routes', src: 'routes', path: '/add-routes' },
-    { title: 'Bus Management', src: 'Calendar', path: '/bus-management' },
-    { title: 'Settings', src: 'Setting', path: '/settings' },
+    { title: 'Buses', src: 'bus', path: '/buses' },
+    { title: 'Routes', src: 'route', path: '/add-routes' },
+    { title: 'Drivers', src: 'driver', path: '/drivers' },
+    { title: 'Management', src: 'management', path: '/bus-management' },
+    { title: 'Settings', src: 'Settings', path: '/settings' },
   ];
 
   return (
@@ -28,12 +28,12 @@ const Navbar = () => {
             <div className="flex items-center">
               <img
                 src="/images/logo.png" alt="Logo"
-                className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"}`}
+                className={`cursor-pointer h-12 ml-0 duration-500 ${open && "rotate-[360deg]"}`}
               />
               <h1
-                className={`text-white ml-2 origin-left font-medium text-xl duration-200 ${!open && "scale-0"}`}
+                className={`text-white carter-one-regular ml-2 origin-left font-medium text-2xl tracking-wider duration-200 ${!open && "scale-0"}`}
               >
-                NavConnect
+                Nav Connect
               </h1>
             </div>
           </Link>
@@ -43,12 +43,12 @@ const Navbar = () => {
           {Menus.map((Menu, index) => (
             <li
               key={index}
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"
                 } `}
             > <Link to={Menu.path} className="flex items-center">
                 <img src={`/images/${Menu.src}.png`} alt="menu" />
-                <span className={`flex px-4 ${!open && "hidden"} `}>
+                <span className={`carter-one-regular tracking-wider text-xl flex px-4 ${!open && "hidden"} `}>
                   {Menu.title}
                 </span>
               </Link>
