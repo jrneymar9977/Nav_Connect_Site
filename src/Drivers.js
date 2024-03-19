@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const Drivers = () => {
   const [firstname, setFirstname] = useState("");
@@ -7,25 +7,29 @@ const Drivers = () => {
   const [email, setEmail] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-
-  const DriverData = [
-    { id: 1, driver: 'Murugan', phone: '8739238929', email: 'Murugan@navsist.com' },
-    { id: 2, driver: 'Rajesh', phone: '9375930298', email: 'Rajesh@navsist.com' },
-    { id: 3, driver: 'Jagan', phone: '2839482938', email: 'Jagan@sist.com' },
-    { id: 4, driver: 'Kamal', phone: '2943928', email: 'Kamal@navsist.com' },
-    { id: 5, driver: 'Ram', phone: '9347549382', email: 'Ram@navsist.com' },
-    { id: 6, driver: 'Manikandan', phone: '8374923743', email: 'Manikandan@navsist.com' },
-    { id: 7, driver: 'Suresh', phone: '8474938', email: 'Suresh@navs.com' },
-    { id: 8, driver: 'Ramesh', phone: '1278163882', email: 'Ramesh@navsist.com' },
-    { id: 9, driver: 'Gokul', phone: '9827394838', email: 'Gokul@navsist.com' },
-  ];
   
+  
+  
+  
+  const [driverData, setDriverData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/drivers'); 
+        setDriverData(response.data);
+      } catch (error) {
+        console.error('Error fetching driver data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/drivers/create/", {
+      const response = await axios.post("http://127.0.0.1:8000/api/drivers/", {
         user: {
           first_name: firstname,
           last_name: lastname,
@@ -50,6 +54,7 @@ const Drivers = () => {
       console.error("Error:", error);
     }
   };
+  
 
   return (
     // <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -161,6 +166,8 @@ const Drivers = () => {
     //   </div>
     // </div>
 
+    
+
     <div className="container mt-14">
       
     <div className="flex items-center justify-center pt-10 mb-8">
@@ -194,12 +201,13 @@ Add Driver
         </tr>
       </thead>
       <tbody>
-        {DriverData.map((bus) => (
-          <tr key={bus.id} className="border-r-2 border-b-2  border-l-2">
-            <td className=" py-3 text-center border-l-2">{bus.id}</td>
-            <td className=" py-3 text-center border-l-2">{bus.driver}</td>
-            <td className=" py-3 text-center border-l-2">{bus.phone}</td>
-            <td className=" py-3 text-center border-l-2">{bus.email}</td>
+        {driverData.map((driver) => (
+          
+          <tr key={driver.id} className="border-r-2 border-b-2  border-l-2">
+            <td className=" py-3 text-center border-l-2">{driver.id}</td>
+            <td className=" py-3 text-center border-l-2">{driver.name}</td>
+            <td className=" py-3 text-center border-l-2">{driver.phone_number}</td>
+            <td className=" py-3 text-center border-l-2">{driver.email}</td>
             {/* cddaeb */}
           </tr>
         ))}
@@ -209,3 +217,4 @@ Add Driver
   );
 };
 export default Drivers;
+

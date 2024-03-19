@@ -1,28 +1,29 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AddBus = () => {
   const [busno, setBusno] = useState("");
   const [driver_id, setDriver_id] = useState("");
 
+const [busData, setBusData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/busdetails/'); 
+        setBusData(response.data);
+      } catch (error) {
+        console.error('Error fetching driver data:', error);
+      }
+    };
 
-  const busData = [
-    { id: 1, busNo: '26', driver: 'Murugan', route: 'Porur' },
-    { id: 2, busNo: '85', driver: 'Rajesh', route: 'Kelambakam' },
-    { id: 3, busNo: '24', driver: 'Jagan', route: 'Medavakkam' },
-    { id: 4, busNo: '87', driver: 'Kamal', route: 'Red Hills' },
-    { id: 5, busNo: '76', driver: 'Ram', route: 'Mugapair' },
-    { id: 6, busNo: '38', driver: 'Manikandan', route: 'Uthandi Toll Gate' },
-    { id: 7, busNo: '29', driver: 'Suresh', route: 'Sriperumbathur' },
-    { id: 8, busNo: '12', driver: 'Ramesh', route: 'Avadi' },
-    { id: 9, busNo: '98', driver: 'Gokul', route: 'Chromepet' },
-  ];
+    fetchData();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/createbus/", {
+      const response = await axios.post("http://127.0.0.1:8000/api/busdetails/", {
         busno: busno,
         driver: driver_id
       });
@@ -127,10 +128,10 @@ const AddBus = () => {
         <tbody>
           {busData.map((bus) => (
             <tr key={bus.id} className="border-r-2 border-b-2  border-l-2">
-              <td className=" py-3 text-center border-l-2">{bus.id}</td>
-              <td className=" py-3 text-center border-l-2">{bus.busNo}</td>
-              <td className=" py-3 text-center border-l-2">{bus.driver}</td>
-              <td className=" py-3 text-center border-l-2">{bus.route}</td>
+              <td className=" py-3 text-center border-l-2">{bus.bus_id}</td>
+              <td className=" py-3 text-center border-l-2">{bus.bus_no}</td>
+              <td className=" py-3 text-center border-l-2">{bus.driver_name}</td>
+              <td className=" py-3 text-center border-l-2">{bus.route_title}</td>
               {/* cddaeb */}
             </tr>
           ))}

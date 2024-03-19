@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import './Routes.css';
 
 const AddRoutes = () => {
   const [routename, setRouteName] = useState("");
@@ -9,43 +10,19 @@ const AddRoutes = () => {
   const [lat, setLat] = useState("");
   const [lang, setLang] = useState("");
 
-  const routesData = [
-    { 
-      id: 1,
-      route: 'Porur',
-      betweenRoutes: ['Porur Signal-', 'Mugalivakkam-', 'Velacherry Railway Station-', 'Thandeeswaram'],
-    },
-    { 
-      id: 2,
-      route: 'Kelambakam',
-      betweenRoutes: ['Padur-', 'Navalur-', 'Ags'],
-    },
-    { 
-      id: 3,
-      route: 'Medavakkam',
-      betweenRoutes: ['Porur Signal-', 'Mugalivakkam-', 'Velacherry Railway Station-', 'Thandeeswaram'],
-    },
-    { 
-      id: 4,
-      route: 'Red Hills',
-      betweenRoutes: ['Puzhal Camp-', 'Perambur Railway Station-', 'ambur Bus Stand-', 'Aaduthotti-', 'B.B. Road-', 'G3 Station-', 'Central Cognizant-', 'Aavin-', 'Aloft Hotel-', 'ECR'],
-    },
-    { 
-      id: 5,
-      route: 'Uthandi Toll Gate',
-      betweenRoutes: ['Gate Prathiyankarail-', 'ECR Water Tank-', 'Panaiyu Puspagiri-', 'Manimangalam-', 'Mudichur-', 'Company'],
-    },
-    { 
-      id: 6,
-      route: 'Sriperumbathur',
-      betweenRoutes: ['Tambaram MCC-', 'Camp Road'],
-    },
-    { 
-      id: 7,
-      route: 'Avadi',
-      betweenRoutes: ['Ambattur-', 'Maduravoyul-', 'Koyambedu-', 'Vadapani-', 'Guindy-', 'Velacherry Bypass'],
-    },
-  ];
+  const [routeData, setRouteData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/busdetails/');
+        setRouteData(response.data);
+      } catch (error) {
+        console.error('Error fetching driver data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -155,7 +132,7 @@ const AddRoutes = () => {
     //           />
     //         </div>
     //       </div> */}
-          
+
     //       <div>
     //         <label htmlFor="lat" className="block mx-2.5 text-sm font-medium leading-6 text-gray-900">
     //           lat
@@ -211,50 +188,69 @@ const AddRoutes = () => {
     // </div>
 
     <div className="container mt-14">
-      
-    <div className="flex items-center justify-center pt-10 mb-8">
-          <div className="relative">
-              <input
-                  type="text"
-                  placeholder="Search Bus"
-                  className="carter-one-regular placeholder-black font-bold font- text-black bg-[#cddaeb] h-12 w-96 px-5 rounded-2xl text-xl focus:outline-none"
-              />
-              <button
-                  type="submit"
-                  className="absolute right-0 px-4 rounded mt-2"
-              >
-                  <img className="" src="/images/search.png" alt="Logo"></img>
-              </button>
-          </div>
+
+      <div className="flex items-center justify-center pt-10 mb-8">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search Bus"
+            className="carter-one-regular placeholder-black font-bold font- text-black bg-[#cddaeb] h-12 w-96 px-5 rounded-2xl text-xl focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="absolute right-0 px-4 rounded mt-2"
+          >
+            <img className="" src="/images/search.png" alt="Logo"></img>
+          </button>
+        </div>
       </div>
       <div className="flex justify-end mr-52">
-    <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6  mx-2 rounded-lg">
-Upload CSV Routes
-</button>
-<button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6 rounded-lg">
-Add Routes
-</button>
-    </div>
-    <table className="bg-white mx-auto min-w-64 rounded-2xl overflow-hidden">
-      <thead className="bg-[#062e61] text-white">
-        <tr>
-          <th className="text-center py-3 px-10  uppercase font-semibold text-sm">ID</th>
-          <th className="text-center py-3 px-10  uppercase font-semibold text-sm">Routes</th>
-          <th className="text-center py-3 px-12  uppercase font-semibold text-sm">In-Between Routes</th>
-          {/* <th className="text-center py-3 px-24  uppercase font-semibold text-sm">Route</th> */}
-        </tr>
-      </thead>
-      <tbody>
-        {routesData.map((route) => (
-          <tr key={route.id} className="border-r-2 border-b-2  border-l-2">
-            <td className=" py-3 text-center border-l-2">{route.id}</td>
-            <td className=" py-3 text-center border-l-2">{route.route}</td>
-            <td className=" py-3 text-center border-l-2">{route.betweenRoutes}</td>
+        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6  mx-2 rounded-lg">
+          Upload CSV Routes
+        </button>
+        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6 rounded-lg">
+          Add Routes
+        </button>
+      </div>
+      <table className="tablu bg-white mx-auto rounded-2xl overflow-hidden">
+        <thead className="bg-[#062e61] text-white">
+          <tr>
+            <th className="text-center py-3 px-10  uppercase font-semibold text-sm">ID</th>
+            <th className="text-center py-3 px-10  uppercase font-semibold text-sm">Routes</th>
+            <th className="text-center py-3 px-12  uppercase font-semibold text-sm">In-Between Routes</th>
           </tr>
+        </thead>
+        <tbody>
+        {routeData.map((route) => (
+  <tr key={route.route_id} className="border-r-2 border-b-2 border-l-2">
+    <td className="py-3 text-center border-l-2">{route.route_id}</td>
+    <td className="py-3 text-center border-l-2">{route.route_title}</td>
+    {/* Check if there are multiple stops in the route */}
+    {route.routes.length > 1 && (
+      <td className="py-3 text-center border-l-2">
+        {/* Display "In-Between Stops" if there are more than one stop */}
+        {/* Loop through each stop and display its name */}
+        {route.routes.map((routeDetail, index) => (
+          <span key={index}>
+            {routeDetail.route_name}
+            {index < route.routes.length - 1 && ", "}
+          </span>
         ))}
-      </tbody>
-    </table>
-  </div>
+      </td>
+    )}
+    {/* If there's only one stop, no need for "In-Between Stops" */}
+    {route.routes.length === 1 && (
+      <td className="py-3 text-center border-l-2">
+        {route.routes[0].route_name}
+      </td>
+    )}
+  </tr>
+))}
+
+        </tbody>
+        
+              </table>
+    </div>
 
   );
 };
