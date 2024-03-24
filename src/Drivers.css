@@ -1,0 +1,60 @@
+.tablu{
+    width: 100%;
+  }
+
+  .bord{
+    border-radius: 12px;
+    border: 1px solid;
+    overflow: hidden;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+  
+  }
+  
+  .box1{
+    background-color: #cddaeb;
+    
+  }
+  .box2{
+    background-color: white;
+  }
+  
+.driverform{
+ padding: 0%;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 50px;
+ height: 600px;
+ width: 500px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  /* padding: 20px; */
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.modal-close {
+  float: right;
+  padding: 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  background-color: #c42b1c;
+  color: white;
+  
+}

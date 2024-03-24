@@ -1,19 +1,19 @@
-// Home.js
 import React from "react";
+import Map from './Map.js'
+import './Map.css';
 
 const Home = () => {
   return (
-      <div className="max-w-max ml-80 mt-9">
-        <div className="border-solid border-2 border-sky-500 w-full max-w-96 p-4">
-          <h1 className="text-2xl font-semibold mb-4">Home</h1>
-          <p className="text-sm">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-            velit enim illo eveniet aperiam voluptatem temporibus voluptate eaque,
-            rem perferendis accusantium, consequatur aliquam omnis laudantium. Fuga
-            libero esse autem harum?
-          </p>
-        </div>
+    <div className="">
+      <div className="flex mt-4">
+        <h1 className=" mx-auto text-2xl text-center font-semibold mb-4">Home</h1>
       </div>
+      <div className="flex mx-20">
+        <Map />
+      </div>
+
+
+    </div>
   );
 };
 

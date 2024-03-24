@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import './Bus.css';
+
 
 const AddBus = () => {
   const [busno, setBusno] = useState("");
   const [driver_id, setDriver_id] = useState("");
 
-const [busData, setBusData] = useState([]);
+  const [busData, setBusData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/busdetails/'); 
+        const response = await axios.get('http://127.0.0.1:8000/api/busdetails/');
         setBusData(response.data);
       } catch (error) {
         console.error('Error fetching driver data:', error);
@@ -37,6 +39,7 @@ const [busData, setBusData] = useState([]);
     }
   };
 
+  var num = 0;
   return (
     // <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     //   <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -92,51 +95,66 @@ const [busData, setBusData] = useState([]);
     //   </div>
     // </div>
 
-
     <div className="container mt-14">
-      
       <div className="flex items-center justify-center pt-10 mb-8">
-            <div className="relative">
-                <input
-                    type="text"
-                    placeholder="Search Bus"
-                    className="carter-one-regular placeholder-black font-bold font- text-black bg-[#cddaeb] h-12 w-96 px-5 rounded-2xl text-xl focus:outline-none"
-                />
-                <button
-                    type="submit"
-                    className="absolute right-0 px-4 rounded mt-2"
-                >
-                    <img className="" src="/images/search.png" alt="Logo"></img>
-                </button>
-            </div>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search Bus"
+            className="carter-one-regular placeholder-black font-bold font- text-black bg-[#cddaeb] h-12 w-96 px-5 rounded-2xl text-xl focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="absolute right-0 px-4 rounded mt-2"
+          >
+            <img className="" src="/images/search.png" alt="Logo"></img>
+          </button>
         </div>
+      </div>
 
       <div className="flex justify-end mr-52">
-      <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 rounded-lg">
-  Add Bus
-</button>
+        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-2 rounded-lg">
+          Add Bus
+        </button>
       </div>
-      <table className="bg-white mx-auto min-w-64 rounded-2xl overflow-hidden">
-        <thead className="bg-[#062e61] text-white">
-          <tr>
-            <th className="text-center py-3 px-10  uppercase font-semibold text-sm">ID</th>
-            <th className="text-center py-3 px-10  uppercase font-semibold text-sm">Bus No</th>
-            <th className="text-center py-3 px-12  uppercase font-semibold text-sm">Driver</th>
-            <th className="text-center py-3 px-24  uppercase font-semibold text-sm">Route</th>
-          </tr>
-        </thead>
-        <tbody>
-          {busData.map((bus) => (
-            <tr key={bus.id} className="border-r-2 border-b-2  border-l-2">
-              <td className=" py-3 text-center border-l-2">{bus.bus_id}</td>
-              <td className=" py-3 text-center border-l-2">{bus.bus_no}</td>
-              <td className=" py-3 text-center border-l-2">{bus.driver_name}</td>
-              <td className=" py-3 text-center border-l-2">{bus.route_title}</td>
-              {/* cddaeb */}
+      <div className="bors rounded-xl">
+        <table className="tabl">
+          <thead className="bg-[#062e61] text-white">
+            <tr>
+              <th className="text-center py-3 px-10  uppercase font-semibold text-sm">ID</th>
+              <th className="text-center py-3 px-10  uppercase font-semibold text-sm">Bus No</th>
+              <th className="text-center py-3 px-12  uppercase font-semibold text-sm">Driver</th>
+              <th className="text-center py-3 px-24  uppercase font-semibold text-sm">Route</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {busData.map((bus) => {
+              num++
+
+              if (num % 2 === 0) {
+                return (
+                  <tr key={bus.id} className="boxs1">
+                    <td className=" py-3 text-center">{bus.bus_id}</td>
+                    <td className=" py-3 text-center border-l-2">{bus.bus_no}</td>
+                    <td className=" py-3 text-center border-l-2">{bus.driver_name}</td>
+                    <td className=" py-3 text-center border-l-2">{bus.route_title}</td>
+                  </tr>
+                );
+              }
+              else {
+                return (
+                  <tr key={bus.id} className="boxs2">
+                    <td className=" py-3 text-center">{bus.bus_id}</td>
+                    <td className=" py-3 text-center border-l-2">{bus.bus_no}</td>
+                    <td className=" py-3 text-center border-l-2">{bus.driver_name}</td>
+                    <td className=" py-3 text-center border-l-2">{bus.route_title}</td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

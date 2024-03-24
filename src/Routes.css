@@ -1,3 +1,80 @@
-.tablu{
-    max-width: 900px;
+.tab {
+  width: 100%;
 }
+
+.bor {
+  border-radius: 12px;
+  border: 1px solid;
+  overflow: hidden;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.box-1 {
+  background-color: #cddaeb;
+}
+
+.box-2 {
+  background-color: white;
+}
+
+.routeform {
+  width: 50%;
+  height: 400px;
+}
+
+
+.modal-overlay-route {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-route {
+  background: white;
+  border-radius: 20px;
+  min-width: 60%;
+  height: 600px;
+}
+
+.modal-close {
+  float: right;
+  padding: 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  background-color: #c42b1c;
+  color: white;
+
+}
+
+
+.add-route {
+  border-radius: 12px;
+  border: 1px solid;
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none;
+  width: 79%;
+  height: 240px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.add-route::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+  }
+
+
+.form-s {
+  max-width: 600px;
+  max-height: 500px;
+
+}
+
