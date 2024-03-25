@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import './Bus.css';
-
+import "./Bus.css";
+import mainurl from "./constants";
 
 const AddBus = () => {
   const [busno, setBusno] = useState("");
@@ -11,10 +11,10 @@ const AddBus = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/busdetails/');
+        const response = await axios.get(`${mainurl}/api/busdetails/`);
         setBusData(response.data);
       } catch (error) {
-        console.error('Error fetching driver data:', error);
+        console.error("Error fetching driver data:", error);
       }
     };
 
@@ -25,16 +25,14 @@ const AddBus = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/busdetails/", {
+      const response = await axios.post(`${mainurl}/api/busdetails/`, {
         busno: busno,
-        driver: driver_id
+        driver: driver_id,
       });
       console.log("Response:", response.data);
       setBusno("");
       setDriver_id("");
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error:", error);
     }
   };
@@ -103,10 +101,7 @@ const AddBus = () => {
             placeholder="Search Bus"
             className="carter-one-regular placeholder-black font-bold font- text-black bg-[#cddaeb] h-12 w-96 px-5 rounded-2xl text-xl focus:outline-none"
           />
-          <button
-            type="submit"
-            className="absolute right-0 px-4 rounded mt-2"
-          >
+          <button type="submit" className="absolute right-0 px-4 rounded mt-2">
             <img className="" src="/images/search.png" alt="Logo"></img>
           </button>
         </div>
@@ -121,33 +116,52 @@ const AddBus = () => {
         <table className="tabl">
           <thead className="bg-[#062e61] text-white">
             <tr>
-              <th className="text-center py-3 px-10  uppercase font-semibold text-sm">ID</th>
-              <th className="text-center py-3 px-10  uppercase font-semibold text-sm">Bus No</th>
-              <th className="text-center py-3 px-12  uppercase font-semibold text-sm">Driver</th>
-              <th className="text-center py-3 px-24  uppercase font-semibold text-sm">Route</th>
+              <th className="text-center py-3 px-10  uppercase font-semibold text-sm">
+                ID
+              </th>
+              <th className="text-center py-3 px-10  uppercase font-semibold text-sm">
+                Bus No
+              </th>
+              <th className="text-center py-3 px-12  uppercase font-semibold text-sm">
+                Driver
+              </th>
+              <th className="text-center py-3 px-24  uppercase font-semibold text-sm">
+                Route
+              </th>
             </tr>
           </thead>
           <tbody>
             {busData.map((bus) => {
-              num++
+              num++;
 
               if (num % 2 === 0) {
                 return (
                   <tr key={bus.id} className="boxs1">
                     <td className=" py-3 text-center">{bus.bus_id}</td>
-                    <td className=" py-3 text-center border-l-2">{bus.bus_no}</td>
-                    <td className=" py-3 text-center border-l-2">{bus.driver_name}</td>
-                    <td className=" py-3 text-center border-l-2">{bus.route_title}</td>
+                    <td className=" py-3 text-center border-l-2">
+                      {bus.bus_no}
+                    </td>
+                    <td className=" py-3 text-center border-l-2">
+                      {bus.driver_name}
+                    </td>
+                    <td className=" py-3 text-center border-l-2">
+                      {bus.route_title}
+                    </td>
                   </tr>
                 );
-              }
-              else {
+              } else {
                 return (
                   <tr key={bus.id} className="boxs2">
                     <td className=" py-3 text-center">{bus.bus_id}</td>
-                    <td className=" py-3 text-center border-l-2">{bus.bus_no}</td>
-                    <td className=" py-3 text-center border-l-2">{bus.driver_name}</td>
-                    <td className=" py-3 text-center border-l-2">{bus.route_title}</td>
+                    <td className=" py-3 text-center border-l-2">
+                      {bus.bus_no}
+                    </td>
+                    <td className=" py-3 text-center border-l-2">
+                      {bus.driver_name}
+                    </td>
+                    <td className=" py-3 text-center border-l-2">
+                      {bus.route_title}
+                    </td>
                   </tr>
                 );
               }
