@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Map from './Map'
-
+import MapContainer from "./MapContainer";
 import './Routes.css';
-
+import './Map.css';
 
 const AddRoutes = () => {
   const [route_title, setRoute_title] = useState("");
@@ -193,9 +192,9 @@ const handleSubmit = async (e) => {
                   Add Route
                 </h2>
               </div>
-              <div className="routeform">
-                <form className="form-s" method="POST" onSubmit={handleSubmit}>
-                  <div className="flex  mx-12 mb-4">
+              <div className="routeform ">
+                <form className=" form-s" method="POST" onSubmit={handleSubmit}>
+                  <div className="flex  mx-14 mb-10">
                     <div>
                       <label htmlFor="route_title" className="block leading-6 font-bold text-black">
                         Route Title
@@ -213,7 +212,6 @@ const handleSubmit = async (e) => {
                       </div>
                     </div>
                   </div>
-                   <Map/>
 
                   <div className="add-route">
                     <table className="tabs">
@@ -261,11 +259,12 @@ const handleSubmit = async (e) => {
                   </div>
                   <button
                 type="submit"
-                className="flex mx-auto justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500"
+                className="form-btn flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500"
               >
                 Submit
               </button>
                 </form>
+                <MapContainer />
               </div>
              
             </div>
