@@ -6,6 +6,9 @@ import mainurl from "./constants";
 const AddBus = () => {
   const [busno, setBusno] = useState("");
   const [driver_id, setDriver_id] = useState("");
+  const [route_id, setRoute_id] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   const [busData, setBusData] = useState([]);
   useEffect(() => {
@@ -25,7 +28,7 @@ const AddBus = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${mainurl}/api/busdetails/`, {
+      const response = await axios.post(`${mainurl}/api/createbus/`, {
         busno: busno,
         driver: driver_id,
       });
@@ -39,60 +42,7 @@ const AddBus = () => {
 
   var num = 0;
   return (
-    // <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-    //   <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-
-    //     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-    //       Add Bus
-    //     </h2>
-    //   </div>
-
-    //   <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    //     <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
-    //       <div>
-    //         <label htmlFor="busno" className="block text-sm font-medium leading-6 text-gray-900">
-    //           busno
-    //         </label>
-    //         <div className="mt-2">
-    //           <input
-    //             id="busno"
-    //             name="busno"
-    //             type="text"
-    //             value={busno}
-    //             onChange={(e) => setBusno(e.target.value)}
-    //             required
-    //             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-    //           />
-    //         </div>
-    //       </div>
-    //       <div>
-    //         <label htmlFor="driver_id" className="block text-sm font-medium leading-6 text-gray-900">
-    //           driver_id
-    //         </label>
-    //         <div className="mt-2">
-    //           <input
-    //             id="driver_id"
-    //             name="driver_id"
-    //             type="text"
-    //             value={driver_id}
-    //             onChange={(e) => setDriver_id(e.target.value)}
-    //             required
-    //             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-    //           />
-    //         </div>
-    //       </div>
-    //       <div>
-    //         <button
-    //           type="submit"
-    //           className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    //         >
-    //           Submit
-    //         </button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // </div>
-
+    <>
     <div className="container mt-14">
       <div className="flex items-center justify-center pt-10 mb-8">
         <div className="relative">
@@ -108,7 +58,7 @@ const AddBus = () => {
       </div>
 
       <div className="flex justify-end mr-52">
-        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-2 rounded-lg">
+        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-2 rounded-lg" onClick={toggleModal}>
           Add Bus
         </button>
       </div>
@@ -170,6 +120,83 @@ const AddBus = () => {
         </table>
       </div>
     </div>
+    {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close" onClick={toggleModal}>
+              X
+            </button>
+            <div className="busform">
+              <div className="flex">
+                <h2 className="mx-auto mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                  Add Bus
+                </h2>
+              </div>
+
+        <div className="mt-2">
+         <form className="sm:mx-auto sm:w-full sm:max-w-sm space-y-6" method="POST" onSubmit={handleSubmit}>
+           <div>
+             <label htmlFor="busno" className="block text-sm font-medium leading-6 text-gray-900">
+              Busno
+            </label>
+           <div className="mt-2">
+              <input
+                id="busno"
+                name="busno"
+                type="text"
+                value={busno}
+                onChange={(e) => setBusno(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="driver_id" className="block text-sm font-medium leading-6 text-gray-900">
+              Driver ID
+            </label>
+            <div className="mt-2">
+              <input
+                id="driver_id"
+                name="driver_id"
+                type="text"
+                value={driver_id}
+                onChange={(e) => setDriver_id(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <div>
+             <label htmlFor="route_id" className="block text-sm font-medium leading-6 text-gray-900">
+              Route ID
+            </label>
+           <div className="mt-2">
+              <input
+                id="route_id"
+                name="route_id"
+                type="text"
+                value={route_id}
+                onChange={(e) => setRoute_id(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div></div></div>
+     )}
+  
+    </>
   );
 };
 export default AddBus;

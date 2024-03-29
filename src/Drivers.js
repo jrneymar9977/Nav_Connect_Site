@@ -52,7 +52,6 @@ const Drivers = () => {
       setPhoneNumber("");
       setPassword("");
       toggleModal();
-      window.location.reload();
     } catch (error) {
       console.error("Error:", error);
     }

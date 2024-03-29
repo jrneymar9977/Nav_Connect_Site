@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-
 import mainurl from "./constants";
+
 
 function MapComponent(props) {
   const [map, setMap] = useState(null);
@@ -21,7 +21,6 @@ function MapComponent(props) {
 
     var newlat = props.lat;
     var newlang = props.lang;
-    // L.marker([newlat, newlang]).addTo(map);
     mapInstance.setView([newlat, newlang]);
 
     return () => {
@@ -29,37 +28,11 @@ function MapComponent(props) {
     };
   }, []);
 
-  // const handleButtonClick = () => {
-  //   fetch(`${mainurl}/api/searchroute/`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ route: inputValue }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Success:", data);
-  //       if (map) {
-  //         const { lat, lang } = data;
-  //         L.marker([lat, lang]).addTo(map);
-  //         map.setView([lat, lang]);
-  //       }
-  //     })
-  //     .catch((error) => console.error("Error:", error));
-  // };
+ 
 
   return (
     <div className="map-container">
-      {/* <input
-        type="text"
-        id="inp"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      /> 
-     <button id="btn" onClick={handleButtonClick}>
-        search
-      </button> */}
+      
       <div id="map" className="map"></div>
     </div>
   );

@@ -14,7 +14,7 @@ const AddRoutes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${mainurl}/api/busdetails/`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/createroute/`);
         setRouteData(response.data);
       } catch (error) {
         console.error("Error fetching driver data:", error);
@@ -34,7 +34,6 @@ const AddRoutes = () => {
   ); // Add an empty row
 
   const [routeindex, setRouteIndex] = useState(0);
-
   const validateRow = (route) => {
     return (
       route.route_name.trim() !== "" &&
@@ -43,19 +42,26 @@ const AddRoutes = () => {
     );
   };
 
+  const [rowCompletionStatus, setRowCompletionStatus] = useState(Array(5).fill(false));
   const updateRouteDetails = (index, field, value) => {
     setRoutes((prevRoutes) => {
       const updatedRoutes = prevRoutes.map((route, i) =>
         i === index
           ? {
-              ...route,
-              [field]: value,
-              order: i + 1,
-              isValid: validateRow({ ...route, [field]: value }),
-            }
+            ...route,
+            [field]: value,
+            order: i + 1,
+            isValid: validateRow({ ...route, [field]: value }),
+          }
           : route
       );
 
+      const isRowCompleted = validateRow(updatedRoutes[index]);
+      setRowCompletionStatus((prevStatus) => {
+        const newStatus = [...prevStatus];
+        newStatus[index] = isRowCompleted;
+        return newStatus;
+      });
       // Check if editing last row and add a new empty one
       if (index === updatedRoutes.length - 1 && value !== "") {
         return [
@@ -103,7 +109,7 @@ const AddRoutes = () => {
     };
 
     try {
-      const response = await axios.post(`${mainurl}}/api/createroute/`, data);
+      const response = await axios.post(`http://127.0.0.1:8000/api/createroute/`, data);
       console.log("Response:", response.data);
       setRoute_title("");
       setRoutes(
@@ -161,59 +167,46 @@ const AddRoutes = () => {
             </tr>
           </thead>
           <tbody>
-            {routeData.map((route) => {
-              num++;
-              if (num % 2 === 0) {
-                return (
-                  <tr key={route.route_id} className="box-1">
-                    <td className="py-3 text-center ">{route.route_id}</td>
-                    <td className="py-3 text-center border-l-2">
-                      {route.route_title}
-                    </td>
-                    {route.routes.length > 1 && (
-                      <td className="py-3 text-center border-l-2">
-                        {route.routes.map((routeDetail, index) => (
-                          <span key={index}>
-                            {routeDetail.route_name}
-                            {index < route.routes.length - 1 && "- "}
-                          </span>
-                        ))}
-                      </td>
-                    )}
-                    {route.routes.length === 1 && (
-                      <td className="py-3 text-center border-l-2">
-                        {route.routes[0].route_name}
-                      </td>
-                    )}
-                  </tr>
-                );
-              } else {
-                return (
-                  <tr key={route.route_id} className="box-2">
-                    <td className="py-3 text-center ">{route.route_id}</td>
-                    <td className="py-3 text-center border-l-2">
-                      {route.route_title}
-                    </td>
-                    {route.routes.length > 1 && (
-                      <td className="py-3 text-center border-l-2">
-                        {route.routes.map((routeDetail, index) => (
-                          <span key={index}>
-                            {routeDetail.route_name}
-                            {index < route.routes.length - 1 && ", "}
-                          </span>
-                        ))}
-                      </td>
-                    )}
-                    {route.routes.length === 1 && (
-                      <td className="py-3 text-center border-l-2">
-                        {route.routes[0].route_name}
-                      </td>
-                    )}
-                  </tr>
-                );
-              }
-            })}
-          </tbody>
+  {routeData.map((route) => {
+    num++;
+    if (num % 2 === 0) {
+      return (
+        <tr key={route.route_id} className="box-1">
+          <td className="py-3 text-center ">{route.route_id}</td>
+          <td className="py-3 text-center border-l-2">
+            {route.route_title}
+          </td>
+          <td className="py-3 text-center border-l-2">
+            {route.subroutes.map((subroute, index) => (
+              <span key={index}>
+                {subroute.route_name}
+                {index < route.subroutes.length - 1 && "- "}
+              </span>
+            ))}
+          </td>
+        </tr>
+      );
+    } else {
+      return (
+        <tr key={route.route_id} className="box-2">
+          <td className="py-3 text-center ">{route.route_id}</td>
+          <td className="py-3 text-center border-l-2">
+            {route.route_title}
+          </td>
+          <td className="py-3 text-center border-l-2">
+            {route.subroutes.map((subroute, index) => (
+              <span key={index}>
+                {subroute.route_name}
+                {index < route.subroutes.length - 1 && "- "}
+              </span>
+            ))}
+          </td>
+        </tr>
+      );
+    }
+  })}
+</tbody>
+
         </table>
       </div>
       {isModalOpen && (
@@ -286,9 +279,9 @@ const AddRoutes = () => {
                                     e.target.value
                                   )
                                 }
-                                className={`border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
-                                }`}
+                                disabled={index !== 0 && !rowCompletionStatus[index - 1]}
+                                className={`border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
+                                  }`}
                               />
                             </td>
                             <td className="text-center h-10 border-l-2">
@@ -302,9 +295,9 @@ const AddRoutes = () => {
                                     e.target.value
                                   )
                                 }
-                                className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
-                                }`}
+                                disabled={index !== 0 && !rowCompletionStatus[index - 1]}
+                                className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
+                                  }`}
                               />
                             </td>
                             <td className="text-center h-10 border-l-2">
@@ -318,9 +311,9 @@ const AddRoutes = () => {
                                     e.target.value
                                   )
                                 }
-                                className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
-                                }`}
+                                disabled={index !== 0 && !rowCompletionStatus[index - 1]}
+                                className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
+                                  }`}
                               />
                             </td>
                           </tr>
