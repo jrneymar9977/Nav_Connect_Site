@@ -80,7 +80,7 @@ const Drivers = () => {
 
         <div className="flex justify-end mr-52">
           <button
-            class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-4 rounded-lg"
+            className="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-4 rounded-lg"
             onClick={toggleModal}
           >
             Add Driver

@@ -6,6 +6,14 @@ import "./Map.css";
 import mainurl from "./constants";
 
 const AddRoutes = () => {
+  const [lat, setLat] = useState(12.872597);
+  const [lang, setLang] = useState(80.221548);
+
+  const handleLatLngChange = (newLat, newLang) => {
+    setLat(newLat);
+    setLang(newLang);
+
+  };
   const [route_title, setRoute_title] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -115,8 +123,8 @@ const AddRoutes = () => {
       setRoutes(
         Array.from({ length: 5 }, () => ({
           route_name: "",
-          lat: "",
-          lang: "",
+          lat: {lat},
+          lang: {lang},
           isValid: false,
         }))
       );
@@ -141,11 +149,11 @@ const AddRoutes = () => {
         </div>
       </div>
       <div className="flex justify-end mr-52">
-        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6  mx-2 rounded-lg">
+        <button className="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6  mx-2 rounded-lg">
           Upload CSV Routes
         </button>
         <button
-          class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6 rounded-lg"
+          className="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-6 rounded-lg"
           onClick={toggleModal}
         >
           Add Routes
@@ -167,45 +175,45 @@ const AddRoutes = () => {
             </tr>
           </thead>
           <tbody>
-  {routeData.map((route) => {
-    num++;
-    if (num % 2 === 0) {
-      return (
-        <tr key={route.route_id} className="box-1">
-          <td className="py-3 text-center ">{route.route_id}</td>
-          <td className="py-3 text-center border-l-2">
-            {route.route_title}
-          </td>
-          <td className="py-3 text-center border-l-2">
-            {route.subroutes.map((subroute, index) => (
-              <span key={index}>
-                {subroute.route_name}
-                {index < route.subroutes.length - 1 && "- "}
-              </span>
-            ))}
-          </td>
-        </tr>
-      );
-    } else {
-      return (
-        <tr key={route.route_id} className="box-2">
-          <td className="py-3 text-center ">{route.route_id}</td>
-          <td className="py-3 text-center border-l-2">
-            {route.route_title}
-          </td>
-          <td className="py-3 text-center border-l-2">
-            {route.subroutes.map((subroute, index) => (
-              <span key={index}>
-                {subroute.route_name}
-                {index < route.subroutes.length - 1 && "- "}
-              </span>
-            ))}
-          </td>
-        </tr>
-      );
-    }
-  })}
-</tbody>
+            {routeData.map((route) => {
+              num++;
+              if (num % 2 === 0) {
+                return (
+                  <tr key={route.route_id} className="box-1">
+                    <td className="py-3 text-center ">{route.route_id}</td>
+                    <td className="py-3 text-center border-l-2">
+                      {route.route_title}
+                    </td>
+                    <td className="py-3 text-center border-l-2">
+                      {route.subroutes.map((subroute, index) => (
+                        <span key={index}>
+                          {subroute.route_name}
+                          {index < route.subroutes.length - 1 && "- "}
+                        </span>
+                      ))}
+                    </td>
+                  </tr>
+                );
+              } else {
+                return (
+                  <tr key={route.route_id} className="box-2">
+                    <td className="py-3 text-center ">{route.route_id}</td>
+                    <td className="py-3 text-center border-l-2">
+                      {route.route_title}
+                    </td>
+                    <td className="py-3 text-center border-l-2">
+                      {route.subroutes.map((subroute, index) => (
+                        <span key={index}>
+                          {subroute.route_name}
+                          {index < route.subroutes.length - 1 && "- "}
+                        </span>
+                      ))}
+                    </td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
 
         </table>
       </div>
@@ -330,16 +338,9 @@ const AddRoutes = () => {
                   Submit
                 </button>
               </form>
-
-              {routes[routeindex].isValid && (
-                <MapContainer
-                  lat={parseFloat(routes[routeindex].lat)}
-                  lang={parseFloat(routes[routeindex].lang)}
-                />
-              )}
-              {!routes[routeindex].isValid && (
-                <MapContainer lat={12.873225} lang={80.221245} />
-              )}
+              <div>
+              </div>
+              <MapContainer lat={lat} lang={lang} onLatLngChange={handleLatLngChange} />
             </div>
           </div>
         </div>

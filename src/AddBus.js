@@ -60,7 +60,7 @@ const AddBus = () => {
       </div>
 
       <div className="flex justify-end mr-52">
-        <button class="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-2 rounded-lg" onClick={toggleModal}>
+        <button className="btn btn-primary bg-[#062e61] text-white font-bold py-2 px-4 mb-2 rounded-lg" onClick={toggleModal}>
           Add Bus
         </button>
       </div>
