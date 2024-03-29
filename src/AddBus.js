@@ -31,10 +31,12 @@ const AddBus = () => {
       const response = await axios.post(`${mainurl}/api/createbus/`, {
         busno: busno,
         driver: driver_id,
+        route: route_id
       });
       console.log("Response:", response.data);
       setBusno("");
       setDriver_id("");
+      setRoute_id("");
     } catch (error) {
       console.error("Error:", error);
     }
