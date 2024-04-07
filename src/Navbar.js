@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   const [open, setOpen] = useState(true);
   const Menus = [
-    { title: 'Buses', src: 'bus', path: '/buses' },
-    { title: 'Routes', src: 'route', path: '/add-routes' },
     { title: 'Drivers', src: 'driver', path: '/drivers' },
+    { title: 'Routes', src: 'route', path: '/add-routes' },
+    { title: 'Buses', src: 'bus', path: '/buses' },
     { title: 'Management', src: 'management', path: '/bus-management' },
     { title: 'Settings', src: 'Settings', path: '/settings' },
   ];

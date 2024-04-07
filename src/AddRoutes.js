@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import MapContainer from "./MapContainer";
 import "./Routes.css";
 import "./Map.css";
@@ -8,12 +8,6 @@ import mainurl from "./constants";
 const AddRoutes = () => {
   const [lat, setLat] = useState(12.872597);
   const [lang, setLang] = useState(80.221548);
-
-  const handleLatLngChange = (newLat, newLang) => {
-    setLat(newLat);
-    setLang(newLang);
-
-  };
   const [route_title, setRoute_title] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -39,16 +33,19 @@ const AddRoutes = () => {
       lang: "",
       isValid: false,
     }))
-  ); // Add an empty row
+  );
 
   const [routeindex, setRouteIndex] = useState(0);
   const validateRow = (route) => {
     return (
-      route.route_name.trim() !== "" &&
-      route.lat.trim() !== "" &&
-      route.lang.trim() !== ""
+        route.route_name.trim() !== "" &&
+        route.lat.trim() !== "" &&
+        route.lang.trim() !== ""
     );
   };
+
+  
+
 
   const [rowCompletionStatus, setRowCompletionStatus] = useState(Array(5).fill(false));
   const updateRouteDetails = (index, field, value) => {
@@ -70,7 +67,7 @@ const AddRoutes = () => {
         newStatus[index] = isRowCompleted;
         return newStatus;
       });
-      // Check if editing last row and add a new empty one
+
       if (index === updatedRoutes.length - 1 && value !== "") {
         return [
           ...updatedRoutes,
@@ -81,6 +78,11 @@ const AddRoutes = () => {
       return updatedRoutes;
     });
   };
+
+  const onSelectMapPoint = useCallback((latitude, longitude) => {
+    updateRouteDetails(routeindex, "lat", latitude.toString());
+    updateRouteDetails(routeindex, "lang", longitude.toString());
+  }, [routeindex, updateRouteDetails]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,8 +125,8 @@ const AddRoutes = () => {
       setRoutes(
         Array.from({ length: 5 }, () => ({
           route_name: "",
-          lat: {lat},
-          lang: {lang},
+          lat: { lat },
+          lang: { lang },
           isValid: false,
         }))
       );
@@ -269,65 +271,44 @@ const AddRoutes = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {routes.map(
-                        (
-                          route = { route_name: "", lat: "", lang: "" },
-                          index
-                        ) => (
-                          <tr key={index}>
-                            <td className="text-center h-10">
-                              <input
-                                type="text"
-                                value={route.route_name}
-                                onClick={() => setRouteIndex(index)}
-                                onChange={(e) =>
-                                  updateRouteDetails(
-                                    index,
-                                    "route_name",
-                                    e.target.value
-                                  )
-                                }
-                                disabled={index !== 0 && !rowCompletionStatus[index - 1]}
-                                className={`border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
-                                  }`}
-                              />
-                            </td>
-                            <td className="text-center h-10 border-l-2">
-                              <input
-                                type="text"
-                                value={route.lat}
-                                onChange={(e) =>
-                                  updateRouteDetails(
-                                    index,
-                                    "lat",
-                                    e.target.value
-                                  )
-                                }
-                                disabled={index !== 0 && !rowCompletionStatus[index - 1]}
-                                className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
-                                  }`}
-                              />
-                            </td>
-                            <td className="text-center h-10 border-l-2">
-                              <input
-                                type="text"
-                                value={route.lang}
-                                onChange={(e) =>
-                                  updateRouteDetails(
-                                    index,
-                                    "lang",
-                                    e.target.value
-                                  )
-                                }
-                                disabled={index !== 0 && !rowCompletionStatus[index - 1]}
-                                className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
-                                  }`}
-                              />
-                            </td>
-                          </tr>
-                        )
-                      )}
+                      {routes.map((route, index) => (
+                        <tr key={index}>
+                          <td className="text-center h-10">
+                            <input
+                              type="text"
+                              value={route.route_name}
+                              onClick={() => setRouteIndex(index)}
+                              onChange={(e) => updateRouteDetails(index, "route_name", e.target.value)}
+                              className={`border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
+                                }`}
+                              disabled={index !== 0 && !rowCompletionStatus[index - 1]}
+                            />
+                          </td>
+                          <td className="text-center h-10 border-l-2">
+                            <input
+                              type="text"
+                              value={route.lat} 
+                              onChange={(e) => updateRouteDetails(index, "lat", e.target.value)}
+                              className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
+                                }`}
+                              disabled={index !== 0 && !rowCompletionStatus[index - 1]}
+                            />
+                          </td>
+                          <td className="text-center h-10 border-l-2">
+                            <input
+                              type="text"
+                              value={route.lang} 
+                              onChange={(e) => updateRouteDetails(index, "lang", e.target.value)}
+                              className={`max-w-24 border-none py-1.5 text-gray-900 placeholder-text-gray-400 sm:text-sm sm:leading-6 ${index % 2 === 0 ? "bg-white" : "bg-[#cddaeb]"
+                                }`}
+                              disabled={index !== 0 && !rowCompletionStatus[index - 1]}
+                            />
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
+
+
                   </table>
                   <div></div>
                 </div>
@@ -340,7 +321,7 @@ const AddRoutes = () => {
               </form>
               <div>
               </div>
-              <MapContainer lat={lat} lang={lang} onLatLngChange={handleLatLngChange} />
+              <MapContainer onSelectPoint={onSelectMapPoint} />
             </div>
           </div>
         </div>
